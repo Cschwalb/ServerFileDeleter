@@ -9,6 +9,8 @@ public class Files
     public string Path { get; set; }
     public string ID { get; set; }
     public string Extension { get; set; }
+    
+    public long Size { get; set; }
 
     public Files(string path, string id)
     {
@@ -16,6 +18,8 @@ public class Files
         ID = id;
         var split = path.Split('.');
         Extension = split[1];
+        FileInfo fi = new FileInfo(path);
+        Size = fi.Length;
     }
 }
 
@@ -35,6 +39,8 @@ public class FileDeleter : ControllerBase
         foreach (var item in ListOfFilesToDelete)
         {
             var file = new Files(item, counter.ToString());
+            FileInfo getSize = new FileInfo(item);
+            file.Size = getSize.Length;
             counter++;
             LOF.Add(file);
         }
