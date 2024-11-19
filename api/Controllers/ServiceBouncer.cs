@@ -31,10 +31,14 @@ public class ServiceBouncer : ControllerBase
                     Verb = "RunAs"
                 }
             };
-            process.Start();
+            if (!process.Start())
+            {
+                return false;
+            }
             string sOutput = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
             Console.WriteLine(sOutput);
+            //todo write handling for output
             return true;
         }
         else
