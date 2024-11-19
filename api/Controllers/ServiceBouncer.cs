@@ -9,7 +9,7 @@ namespace api.Controllers;
 [Route("[controller]")]
 public class ServiceBouncer : ControllerBase
 {
-    [HttpPost(Name = "turnOffService")]
+    [HttpGet(Name = "turnOffService")]
     public bool Get(string sServiceName)
     {
         if (sServiceName.Length <= 0)
@@ -39,6 +39,7 @@ public class ServiceBouncer : ControllerBase
             process.WaitForExit();
             Console.WriteLine(sOutput);
             //todo write handling for output
+            
             return true;
         }
         else
