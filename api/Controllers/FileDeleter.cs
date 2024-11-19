@@ -30,10 +30,12 @@ public class FileDeleter : ControllerBase
     [HttpGet(Name = "GetFilesToDelete")]
     public List<Files> Get(string sDirectory)
     {
+        Console.WriteLine("Getting Files to Delete!");
         var fileListMP3 = Directory.GetFiles(sDirectory, "*.mp3");
         var fileListWEBM = Directory.GetFiles(sDirectory, "*.WEBM");
         int counter = 0;
         var ListOfFilesToDelete = fileListWEBM.Union(fileListMP3);
+        // if I knew more regex this union wouldn't be needed.
         List<Files> LOF = new List<Files>();
         
         foreach (var item in ListOfFilesToDelete)
@@ -74,6 +76,13 @@ public class FileDeleter : ControllerBase
             {
                 System.IO.File.Delete(item.Path);
                 Console.WriteLine("Deleted Item:  " + item.Path);
+            }
+            else
+            {
+                return new HttpResponseMessage(HttpStatusCode.BadRequest)
+                {
+                    Content = new StringContent("Could not find Item to delete!")
+                };
             }
         }
 

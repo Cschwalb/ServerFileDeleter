@@ -9,24 +9,37 @@ namespace api.Controllers;
 [Route("[controller]")]
 public class ServiceBouncer : ControllerBase
 {
-    [HttpGet(Name = "turnOffService")]
+    [HttpPost(Name = "turnOffService")]
     public bool Get(string sServiceName)
     {
-        Process process = new Process
+        if (sServiceName.Length <= 0)
         {
-            StartInfo = new ProcessStartInfo
+            return false;
+        }
+        
+        if (OperatingSystem.IsWindows())
+        {
+            Process process = new Process
             {
-                FileName = "cmd.exe",
-                Arguments = $"/C net stop {sServiceName}",// was \C net stop {sServiceName}
-                RedirectStandardOutput = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
-        };
-        process.Start();
-        string sOutput = process.StandardOutput.ReadToEnd();
-        process.WaitForExit();
-        Console.WriteLine(sOutput);
-        return true;
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "cmd.exe",
+                    Arguments = $"/C net stop {sServiceName}", // was \C net stop {sServiceName}
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    Verb = "RunAs"
+                }
+            };
+            process.Start();
+            string sOutput = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            Console.WriteLine(sOutput);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
