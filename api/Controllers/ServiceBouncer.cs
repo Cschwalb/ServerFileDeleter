@@ -17,7 +17,7 @@ public class ServiceBouncer : ControllerBase
             StartInfo = new ProcessStartInfo
             {
                 FileName = "cmd.exe",
-                Arguments = $"net stop {sServiceName}",
+                Arguments = $"/C net stop {sServiceName}",// was \C net stop {sServiceName}
                 RedirectStandardOutput = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
