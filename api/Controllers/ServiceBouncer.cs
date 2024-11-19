@@ -12,7 +12,7 @@ public class ServiceBouncer : ControllerBase
     [HttpGet(Name = "turnOffService")]
     public bool Get(string sServiceName)
     {
-        if (sServiceName.Length <= 0)
+        if (sServiceName.Length <= 0 || string.IsNullOrWhiteSpace(sServiceName))
         {
             return false;
         }
@@ -26,6 +26,7 @@ public class ServiceBouncer : ControllerBase
                     FileName = "cmd.exe",
                     Arguments = $"/C net stop {sServiceName}", // was \C net stop {sServiceName}
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true, // Capture errors too
                     UseShellExecute = false,
                     CreateNoWindow = true,
                     Verb = "RunAs"
@@ -39,7 +40,10 @@ public class ServiceBouncer : ControllerBase
             process.WaitForExit();
             Console.WriteLine(sOutput);
             //todo write handling for output
-            
+            if (sOutput.Contains("invalid"))
+            {
+                return false;
+            }
             return true;
         }
         else
