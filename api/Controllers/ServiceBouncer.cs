@@ -37,7 +37,10 @@ public class ServiceBouncer : ControllerBase
                 return false;
             }
             string sOutput = process.StandardOutput.ReadToEnd();
+            string error = process.StandardError.ReadToEnd();
+
             process.WaitForExit();
+            Console.WriteLine(error);
             Console.WriteLine(sOutput);
             //todo write handling for output
             if (sOutput.Contains("invalid"))
