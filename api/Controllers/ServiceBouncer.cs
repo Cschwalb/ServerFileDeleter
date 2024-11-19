@@ -43,7 +43,7 @@ public class ServiceBouncer : ControllerBase
             Console.WriteLine(error);
             Console.WriteLine(sOutput);
             //todo write handling for output
-            if (sOutput.Contains("invalid"))
+            if (error.Contains("invalid"))
             {
                 return false;
             }
