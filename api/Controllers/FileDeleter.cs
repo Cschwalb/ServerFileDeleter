@@ -1,6 +1,5 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
-
 namespace api.Controllers;
 
 
@@ -46,6 +45,7 @@ public class FileDeleter : ControllerBase
             counter++;
             LOF.Add(file);
         }
+        
         return LOF;
     }
 
@@ -53,7 +53,7 @@ public class FileDeleter : ControllerBase
     public async Task<HttpResponseMessage> Post(string sDirectory)
     {
         // check if file directory is there
-        if (!Directory.Exists(sDirectory) || string.IsNullOrEmpty(sDirectory) == true)
+        if (!Directory.Exists(sDirectory) || string.IsNullOrEmpty(sDirectory))
         {
             return new HttpResponseMessage(HttpStatusCode.BadRequest)
             {
